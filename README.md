@@ -2,18 +2,26 @@
 
 ## Instructions
 
-Install prisma & docker & docker compose (refer to the docker doc for your OS)
+Install prisma, docker and docker compose
+
+Prisma : https://www.prisma.io/
+
+`npm install -g prisma`
+
+Docker https://www.docker.com/
+(refer to the docker doc for your OS)
+
+Then run :
 
 ```bash
-npm install -g prisma
 docker-compose up -d
 yarn bootstrap
 yarn seed
 yarn start
 ```
 
-For simplicity purpose a graphql playground will be provided.
-Making it an HTTP endpoint is trivial once the queries and mutations are working (http://myapi/graphql?query={me{name}}).
+For simplicity purpose a graphql playground is provided.
+Making an HTTP endpoint is trivial once the queries and mutations are working (http://myapi/graphql?query={me{name}}).
 
 Playground is available at http://localhost:4000
 
@@ -39,6 +47,8 @@ Playground is available at http://localhost:4000
 9. Cleaning up code and writing document and readme
 
 ## GraphQL operations walkthrough
+
+**Look at the console output from the yarn start script**
 
 ### Creating Updates
 
@@ -132,11 +142,11 @@ We can leverage the full GraphQL power to query only the field we need for our f
 
 ## Conclusion :
 
-What could be improved:
+A few things could be improved:
 
 1. Directory structure => As the service scale, properly structure the directory will be important.
 2. Extract the helper methods from index.ts, and clean up some of the code.
 3. Performances, schema, and query efficiency can all be improved.
-4. Adding middlewares and other micro-services, eject from graphql yoga (https://github.com/prisma/graphql-yoga) or switch to express + node, apollo server or equivalent. The third party provider might not want to send a graphQL HTTP request, or we might want to do some parsing and checks before writing to the DB.
+4. Adding middlewares and other micro-services, ejecting from graphql yoga (https://github.com/prisma/graphql-yoga) to access the underlying express instance, or switch to express + node, apollo server or equivalent. The third party provider might not want to send a graphQL HTTP request, or we might want to do some parsing and checks before writing to the DB.
 5. Authentification.
 6. Write tests to make sure everything works.
