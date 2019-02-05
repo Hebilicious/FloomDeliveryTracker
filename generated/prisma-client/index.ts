@@ -14,6 +14,9 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
 
 export interface Exists {
+  coordinate: (where?: CoordinateWhereInput) => Promise<boolean>;
+  order: (where?: OrderWhereInput) => Promise<boolean>;
+  orderUpdate: (where?: OrderUpdateWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
@@ -36,6 +39,62 @@ export interface Prisma {
    * Queries
    */
 
+  coordinates: (args?: {
+    where?: CoordinateWhereInput;
+    orderBy?: CoordinateOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Coordinate>;
+  coordinatesConnection: (args?: {
+    where?: CoordinateWhereInput;
+    orderBy?: CoordinateOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => CoordinateConnectionPromise;
+  order: (where: OrderWhereUniqueInput) => OrderPromise;
+  orders: (args?: {
+    where?: OrderWhereInput;
+    orderBy?: OrderOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Order>;
+  ordersConnection: (args?: {
+    where?: OrderWhereInput;
+    orderBy?: OrderOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => OrderConnectionPromise;
+  orderUpdate: (where: OrderUpdateWhereUniqueInput) => OrderUpdatePromise;
+  orderUpdates: (args?: {
+    where?: OrderUpdateWhereInput;
+    orderBy?: OrderUpdateOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<OrderUpdate>;
+  orderUpdatesConnection: (args?: {
+    where?: OrderUpdateWhereInput;
+    orderBy?: OrderUpdateOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => OrderUpdateConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserPromise;
   users: (args?: {
     where?: UserWhereInput;
@@ -61,6 +120,46 @@ export interface Prisma {
    * Mutations
    */
 
+  createCoordinate: (data: CoordinateCreateInput) => CoordinatePromise;
+  updateManyCoordinates: (args: {
+    data: CoordinateUpdateManyMutationInput;
+    where?: CoordinateWhereInput;
+  }) => BatchPayloadPromise;
+  deleteManyCoordinates: (where?: CoordinateWhereInput) => BatchPayloadPromise;
+  createOrder: (data: OrderCreateInput) => OrderPromise;
+  updateOrder: (args: {
+    data: OrderUpdateInput;
+    where: OrderWhereUniqueInput;
+  }) => OrderPromise;
+  updateManyOrders: (args: {
+    data: OrderUpdateManyMutationInput;
+    where?: OrderWhereInput;
+  }) => BatchPayloadPromise;
+  upsertOrder: (args: {
+    where: OrderWhereUniqueInput;
+    create: OrderCreateInput;
+    update: OrderUpdateInput;
+  }) => OrderPromise;
+  deleteOrder: (where: OrderWhereUniqueInput) => OrderPromise;
+  deleteManyOrders: (where?: OrderWhereInput) => BatchPayloadPromise;
+  createOrderUpdate: (data: OrderUpdateCreateInput) => OrderUpdatePromise;
+  updateOrderUpdate: (args: {
+    data: OrderUpdateUpdateInput;
+    where: OrderUpdateWhereUniqueInput;
+  }) => OrderUpdatePromise;
+  updateManyOrderUpdates: (args: {
+    data: OrderUpdateUpdateManyMutationInput;
+    where?: OrderUpdateWhereInput;
+  }) => BatchPayloadPromise;
+  upsertOrderUpdate: (args: {
+    where: OrderUpdateWhereUniqueInput;
+    create: OrderUpdateCreateInput;
+    update: OrderUpdateUpdateInput;
+  }) => OrderUpdatePromise;
+  deleteOrderUpdate: (where: OrderUpdateWhereUniqueInput) => OrderUpdatePromise;
+  deleteManyOrderUpdates: (
+    where?: OrderUpdateWhereInput
+  ) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (args: {
     data: UserUpdateInput;
@@ -86,6 +185,15 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  coordinate: (
+    where?: CoordinateSubscriptionWhereInput
+  ) => CoordinateSubscriptionPayloadSubscription;
+  order: (
+    where?: OrderSubscriptionWhereInput
+  ) => OrderSubscriptionPayloadSubscription;
+  orderUpdate: (
+    where?: OrderUpdateSubscriptionWhereInput
+  ) => OrderUpdateSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -99,6 +207,54 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type OrderStatus =
+  | "BEING_PREPARED"
+  | "EN_ROUTE_TO_SENDER"
+  | "WAITING_AT_SENDER"
+  | "EN_ROUTE_TO_RECIPIENT"
+  | "DELIVERED"
+  | "UNSUCESSFUL";
+
+export type OrderUpdateOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "consignmentId_ASC"
+  | "consignmentId_DESC"
+  | "status_ASC"
+  | "status_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
+export type OrderOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "consignmentId_ASC"
+  | "consignmentId_DESC"
+  | "active_ASC"
+  | "active_DESC"
+  | "currentStatus_ASC"
+  | "currentStatus_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type CoordinateOrderByInput =
+  | "latitute_ASC"
+  | "latitute_DESC"
+  | "longitude_ASC"
+  | "longitude_DESC"
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -109,18 +265,338 @@ export type UserOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+export interface OrderUpdateUpsertWithWhereUniqueNestedInput {
+  where: OrderUpdateWhereUniqueInput;
+  update: OrderUpdateUpdateDataInput;
+  create: OrderUpdateCreateInput;
+}
 
-export interface UserCreateInput {
-  name: String;
+export interface OrderUpdateInput {
+  user?: UserUpdateOneRequiredInput;
+  consignmentId?: Int;
+  deliveryLocation?: CoordinateUpdateOneRequiredInput;
+  senderLocation?: CoordinateUpdateOneRequiredInput;
+  updates?: OrderUpdateUpdateManyInput;
+  active?: Boolean;
+  currentStatus?: OrderStatus;
+}
+
+export interface OrderUpdateUpdateManyInput {
+  create?: OrderUpdateCreateInput[] | OrderUpdateCreateInput;
+  update?:
+    | OrderUpdateUpdateWithWhereUniqueNestedInput[]
+    | OrderUpdateUpdateWithWhereUniqueNestedInput;
+  upsert?:
+    | OrderUpdateUpsertWithWhereUniqueNestedInput[]
+    | OrderUpdateUpsertWithWhereUniqueNestedInput;
+  delete?: OrderUpdateWhereUniqueInput[] | OrderUpdateWhereUniqueInput;
+  connect?: OrderUpdateWhereUniqueInput[] | OrderUpdateWhereUniqueInput;
+  disconnect?: OrderUpdateWhereUniqueInput[] | OrderUpdateWhereUniqueInput;
+  deleteMany?: OrderUpdateScalarWhereInput[] | OrderUpdateScalarWhereInput;
+  updateMany?:
+    | OrderUpdateUpdateManyWithWhereNestedInput[]
+    | OrderUpdateUpdateManyWithWhereNestedInput;
+}
+
+export interface CoordinateWhereInput {
+  latitute?: Float;
+  latitute_not?: Float;
+  latitute_in?: Float[] | Float;
+  latitute_not_in?: Float[] | Float;
+  latitute_lt?: Float;
+  latitute_lte?: Float;
+  latitute_gt?: Float;
+  latitute_gte?: Float;
+  longitude?: Float;
+  longitude_not?: Float;
+  longitude_in?: Float[] | Float;
+  longitude_not_in?: Float[] | Float;
+  longitude_lt?: Float;
+  longitude_lte?: Float;
+  longitude_gt?: Float;
+  longitude_gte?: Float;
+  AND?: CoordinateWhereInput[] | CoordinateWhereInput;
+  OR?: CoordinateWhereInput[] | CoordinateWhereInput;
+  NOT?: CoordinateWhereInput[] | CoordinateWhereInput;
+}
+
+export interface CoordinateUpsertNestedInput {
+  update: CoordinateUpdateDataInput;
+  create: CoordinateCreateInput;
 }
 
 export interface UserUpdateInput {
   name?: String;
 }
 
-export interface UserUpdateManyMutationInput {
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export type OrderWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+}
+
+export interface OrderUpdateManyMutationInput {
+  consignmentId?: Int;
+  active?: Boolean;
+  currentStatus?: OrderStatus;
+}
+
+export interface CoordinateUpdateDataInput {
+  latitute?: Float;
+  longitude?: Float;
+}
+
+export interface OrderUpdateWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  consignmentId?: Int;
+  consignmentId_not?: Int;
+  consignmentId_in?: Int[] | Int;
+  consignmentId_not_in?: Int[] | Int;
+  consignmentId_lt?: Int;
+  consignmentId_lte?: Int;
+  consignmentId_gt?: Int;
+  consignmentId_gte?: Int;
+  coordinate?: CoordinateWhereInput;
+  status?: OrderStatus;
+  status_not?: OrderStatus;
+  status_in?: OrderStatus[] | OrderStatus;
+  status_not_in?: OrderStatus[] | OrderStatus;
+  AND?: OrderUpdateWhereInput[] | OrderUpdateWhereInput;
+  OR?: OrderUpdateWhereInput[] | OrderUpdateWhereInput;
+  NOT?: OrderUpdateWhereInput[] | OrderUpdateWhereInput;
+}
+
+export interface CoordinateUpdateOneRequiredInput {
+  create?: CoordinateCreateInput;
+  update?: CoordinateUpdateDataInput;
+  upsert?: CoordinateUpsertNestedInput;
+}
+
+export interface CoordinateSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: CoordinateWhereInput;
+  AND?: CoordinateSubscriptionWhereInput[] | CoordinateSubscriptionWhereInput;
+  OR?: CoordinateSubscriptionWhereInput[] | CoordinateSubscriptionWhereInput;
+  NOT?: CoordinateSubscriptionWhereInput[] | CoordinateSubscriptionWhereInput;
+}
+
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
+}
+
+export interface OrderWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  user?: UserWhereInput;
+  consignmentId?: Int;
+  consignmentId_not?: Int;
+  consignmentId_in?: Int[] | Int;
+  consignmentId_not_in?: Int[] | Int;
+  consignmentId_lt?: Int;
+  consignmentId_lte?: Int;
+  consignmentId_gt?: Int;
+  consignmentId_gte?: Int;
+  deliveryLocation?: CoordinateWhereInput;
+  senderLocation?: CoordinateWhereInput;
+  updates_every?: OrderUpdateWhereInput;
+  updates_some?: OrderUpdateWhereInput;
+  updates_none?: OrderUpdateWhereInput;
+  active?: Boolean;
+  active_not?: Boolean;
+  currentStatus?: OrderStatus;
+  currentStatus_not?: OrderStatus;
+  currentStatus_in?: OrderStatus[] | OrderStatus;
+  currentStatus_not_in?: OrderStatus[] | OrderStatus;
+  AND?: OrderWhereInput[] | OrderWhereInput;
+  OR?: OrderWhereInput[] | OrderWhereInput;
+  NOT?: OrderWhereInput[] | OrderWhereInput;
+}
+
+export interface OrderSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: OrderWhereInput;
+  AND?: OrderSubscriptionWhereInput[] | OrderSubscriptionWhereInput;
+  OR?: OrderSubscriptionWhereInput[] | OrderSubscriptionWhereInput;
+  NOT?: OrderSubscriptionWhereInput[] | OrderSubscriptionWhereInput;
+}
+
+export interface OrderUpdateSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: OrderUpdateWhereInput;
+  AND?: OrderUpdateSubscriptionWhereInput[] | OrderUpdateSubscriptionWhereInput;
+  OR?: OrderUpdateSubscriptionWhereInput[] | OrderUpdateSubscriptionWhereInput;
+  NOT?: OrderUpdateSubscriptionWhereInput[] | OrderUpdateSubscriptionWhereInput;
+}
+
+export interface CoordinateCreateInput {
+  latitute: Float;
+  longitude: Float;
+}
+
+export type OrderUpdateWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface CoordinateUpdateManyMutationInput {
+  latitute?: Float;
+  longitude?: Float;
+}
+
+export interface OrderUpdateUpdateManyMutationInput {
+  consignmentId?: Int;
+  status?: OrderStatus;
+}
+
+export interface UserUpdateDataInput {
   name?: String;
+}
+
+export interface OrderUpdateUpdateManyDataInput {
+  consignmentId?: Int;
+  status?: OrderStatus;
+}
+
+export interface UserUpdateOneRequiredInput {
+  create?: UserCreateInput;
+  update?: UserUpdateDataInput;
+  upsert?: UserUpsertNestedInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface OrderUpdateUpdateManyWithWhereNestedInput {
+  where: OrderUpdateScalarWhereInput;
+  data: OrderUpdateUpdateManyDataInput;
+}
+
+export interface OrderCreateInput {
+  user: UserCreateOneInput;
+  consignmentId: Int;
+  deliveryLocation: CoordinateCreateOneInput;
+  senderLocation: CoordinateCreateOneInput;
+  updates?: OrderUpdateCreateManyInput;
+  active?: Boolean;
+  currentStatus: OrderStatus;
+}
+
+export interface OrderUpdateScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  consignmentId?: Int;
+  consignmentId_not?: Int;
+  consignmentId_in?: Int[] | Int;
+  consignmentId_not_in?: Int[] | Int;
+  consignmentId_lt?: Int;
+  consignmentId_lte?: Int;
+  consignmentId_gt?: Int;
+  consignmentId_gte?: Int;
+  status?: OrderStatus;
+  status_not?: OrderStatus;
+  status_in?: OrderStatus[] | OrderStatus;
+  status_not_in?: OrderStatus[] | OrderStatus;
+  AND?: OrderUpdateScalarWhereInput[] | OrderUpdateScalarWhereInput;
+  OR?: OrderUpdateScalarWhereInput[] | OrderUpdateScalarWhereInput;
+  NOT?: OrderUpdateScalarWhereInput[] | OrderUpdateScalarWhereInput;
+}
+
+export interface UserCreateOneInput {
+  create?: UserCreateInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface OrderUpdateUpdateWithWhereUniqueNestedInput {
+  where: OrderUpdateWhereUniqueInput;
+  data: OrderUpdateUpdateDataInput;
+}
+
+export interface OrderUpdateCreateInput {
+  consignmentId: Int;
+  coordinate: CoordinateCreateOneInput;
+  status: OrderStatus;
+}
+
+export interface OrderUpdateCreateManyInput {
+  create?: OrderUpdateCreateInput[] | OrderUpdateCreateInput;
+  connect?: OrderUpdateWhereUniqueInput[] | OrderUpdateWhereUniqueInput;
+}
+
+export interface CoordinateCreateOneInput {
+  create?: CoordinateCreateInput;
+}
+
+export interface UserCreateInput {
+  name: String;
+}
+
+export interface OrderUpdateUpdateInput {
+  consignmentId?: Int;
+  coordinate?: CoordinateUpdateOneRequiredInput;
+  status?: OrderStatus;
+}
+
+export interface OrderUpdateUpdateDataInput {
+  consignmentId?: Int;
+  coordinate?: CoordinateUpdateOneRequiredInput;
+  status?: OrderStatus;
 }
 
 export interface UserWhereInput {
@@ -157,55 +633,12 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+export interface UserUpdateManyMutationInput {
+  name?: String;
 }
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
 
 export interface NodeNode {
   id: ID_Output;
-}
-
-export interface AggregateUser {
-  count: Int;
-}
-
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface BatchPayload {
-  count: Long;
-}
-
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
 }
 
 export interface UserPreviousValues {
@@ -227,21 +660,76 @@ export interface UserPreviousValuesSubscription
   name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface UserEdge {
-  node: User;
-  cursor: String;
+export interface Order {
+  id: ID_Output;
+  consignmentId: Int;
+  active?: Boolean;
+  currentStatus: OrderStatus;
 }
 
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
-  cursor: () => Promise<String>;
+export interface OrderPromise extends Promise<Order>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  consignmentId: () => Promise<Int>;
+  deliveryLocation: <T = CoordinatePromise>() => T;
+  senderLocation: <T = CoordinatePromise>() => T;
+  updates: <T = FragmentableArray<OrderUpdate>>(args?: {
+    where?: OrderUpdateWhereInput;
+    orderBy?: OrderUpdateOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  active: () => Promise<Boolean>;
+  currentStatus: () => Promise<OrderStatus>;
 }
 
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
+export interface OrderSubscription
+  extends Promise<AsyncIterator<Order>>,
     Fragmentable {
-  node: <T = UserSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user: <T = UserSubscription>() => T;
+  consignmentId: () => Promise<AsyncIterator<Int>>;
+  deliveryLocation: <T = CoordinateSubscription>() => T;
+  senderLocation: <T = CoordinateSubscription>() => T;
+  updates: <T = Promise<AsyncIterator<OrderUpdateSubscription>>>(args?: {
+    where?: OrderUpdateWhereInput;
+    orderBy?: OrderUpdateOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  active: () => Promise<AsyncIterator<Boolean>>;
+  currentStatus: () => Promise<AsyncIterator<OrderStatus>>;
+}
+
+export interface OrderUpdateSubscriptionPayload {
+  mutation: MutationType;
+  node: OrderUpdate;
+  updatedFields: String[];
+  previousValues: OrderUpdatePreviousValues;
+}
+
+export interface OrderUpdateSubscriptionPayloadPromise
+  extends Promise<OrderUpdateSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = OrderUpdatePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = OrderUpdatePreviousValuesPromise>() => T;
+}
+
+export interface OrderUpdateSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<OrderUpdateSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = OrderUpdateSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = OrderUpdatePreviousValuesSubscription>() => T;
 }
 
 export interface UserSubscriptionPayload {
@@ -269,42 +757,131 @@ export interface UserSubscriptionPayloadSubscription
   previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
-export interface User {
+export interface AggregateCoordinate {
+  count: Int;
+}
+
+export interface AggregateCoordinatePromise
+  extends Promise<AggregateCoordinate>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCoordinateSubscription
+  extends Promise<AsyncIterator<AggregateCoordinate>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CoordinateEdge {
+  node: Coordinate;
+  cursor: String;
+}
+
+export interface CoordinateEdgePromise
+  extends Promise<CoordinateEdge>,
+    Fragmentable {
+  node: <T = CoordinatePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CoordinateEdgeSubscription
+  extends Promise<AsyncIterator<CoordinateEdge>>,
+    Fragmentable {
+  node: <T = CoordinateSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateOrderUpdate {
+  count: Int;
+}
+
+export interface AggregateOrderUpdatePromise
+  extends Promise<AggregateOrderUpdate>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateOrderUpdateSubscription
+  extends Promise<AsyncIterator<AggregateOrderUpdate>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface OrderUpdatePreviousValues {
   id: ID_Output;
-  name: String;
+  consignmentId: Int;
+  status: OrderStatus;
 }
 
-export interface UserPromise extends Promise<User>, Fragmentable {
+export interface OrderUpdatePreviousValuesPromise
+  extends Promise<OrderUpdatePreviousValues>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  consignmentId: () => Promise<Int>;
+  status: () => Promise<OrderStatus>;
 }
 
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
+export interface OrderUpdatePreviousValuesSubscription
+  extends Promise<AsyncIterator<OrderUpdatePreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
+  consignmentId: () => Promise<AsyncIterator<Int>>;
+  status: () => Promise<AsyncIterator<OrderStatus>>;
 }
 
-export interface UserConnection {
+export interface OrderUpdateConnection {
   pageInfo: PageInfo;
-  edges: UserEdge[];
+  edges: OrderUpdateEdge[];
 }
 
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
+export interface OrderUpdateConnectionPromise
+  extends Promise<OrderUpdateConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
+  edges: <T = FragmentableArray<OrderUpdateEdge>>() => T;
+  aggregate: <T = AggregateOrderUpdatePromise>() => T;
 }
 
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
+export interface OrderUpdateConnectionSubscription
+  extends Promise<AsyncIterator<OrderUpdateConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<OrderUpdateEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateOrderUpdateSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -330,12 +907,293 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-/*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
+export interface OrderEdge {
+  node: Order;
+  cursor: String;
+}
+
+export interface OrderEdgePromise extends Promise<OrderEdge>, Fragmentable {
+  node: <T = OrderPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface OrderEdgeSubscription
+  extends Promise<AsyncIterator<OrderEdge>>,
+    Fragmentable {
+  node: <T = OrderSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CoordinateConnection {
+  pageInfo: PageInfo;
+  edges: CoordinateEdge[];
+}
+
+export interface CoordinateConnectionPromise
+  extends Promise<CoordinateConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CoordinateEdge>>() => T;
+  aggregate: <T = AggregateCoordinatePromise>() => T;
+}
+
+export interface CoordinateConnectionSubscription
+  extends Promise<AsyncIterator<CoordinateConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CoordinateEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCoordinateSubscription>() => T;
+}
+
+export interface OrderUpdate {
+  id: ID_Output;
+  consignmentId: Int;
+  status: OrderStatus;
+}
+
+export interface OrderUpdatePromise extends Promise<OrderUpdate>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  consignmentId: () => Promise<Int>;
+  coordinate: <T = CoordinatePromise>() => T;
+  status: () => Promise<OrderStatus>;
+}
+
+export interface OrderUpdateSubscription
+  extends Promise<AsyncIterator<OrderUpdate>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  consignmentId: () => Promise<AsyncIterator<Int>>;
+  coordinate: <T = CoordinateSubscription>() => T;
+  status: () => Promise<AsyncIterator<OrderStatus>>;
+}
+
+export interface CoordinateSubscriptionPayload {
+  mutation: MutationType;
+  node: Coordinate;
+  updatedFields: String[];
+  previousValues: CoordinatePreviousValues;
+}
+
+export interface CoordinateSubscriptionPayloadPromise
+  extends Promise<CoordinateSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CoordinatePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CoordinatePreviousValuesPromise>() => T;
+}
+
+export interface CoordinateSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CoordinateSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CoordinateSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CoordinatePreviousValuesSubscription>() => T;
+}
+
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface OrderUpdateEdge {
+  node: OrderUpdate;
+  cursor: String;
+}
+
+export interface OrderUpdateEdgePromise
+  extends Promise<OrderUpdateEdge>,
+    Fragmentable {
+  node: <T = OrderUpdatePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface OrderUpdateEdgeSubscription
+  extends Promise<AsyncIterator<OrderUpdateEdge>>,
+    Fragmentable {
+  node: <T = OrderUpdateSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface OrderPreviousValues {
+  id: ID_Output;
+  consignmentId: Int;
+  active?: Boolean;
+  currentStatus: OrderStatus;
+}
+
+export interface OrderPreviousValuesPromise
+  extends Promise<OrderPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  consignmentId: () => Promise<Int>;
+  active: () => Promise<Boolean>;
+  currentStatus: () => Promise<OrderStatus>;
+}
+
+export interface OrderPreviousValuesSubscription
+  extends Promise<AsyncIterator<OrderPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  consignmentId: () => Promise<AsyncIterator<Int>>;
+  active: () => Promise<AsyncIterator<Boolean>>;
+  currentStatus: () => Promise<AsyncIterator<OrderStatus>>;
+}
+
+export interface OrderSubscriptionPayload {
+  mutation: MutationType;
+  node: Order;
+  updatedFields: String[];
+  previousValues: OrderPreviousValues;
+}
+
+export interface OrderSubscriptionPayloadPromise
+  extends Promise<OrderSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = OrderPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = OrderPreviousValuesPromise>() => T;
+}
+
+export interface OrderSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<OrderSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = OrderSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = OrderPreviousValuesSubscription>() => T;
+}
+
+export interface Coordinate {
+  latitute: Float;
+  longitude: Float;
+}
+
+export interface CoordinatePromise extends Promise<Coordinate>, Fragmentable {
+  latitute: () => Promise<Float>;
+  longitude: () => Promise<Float>;
+}
+
+export interface CoordinateSubscription
+  extends Promise<AsyncIterator<Coordinate>>,
+    Fragmentable {
+  latitute: () => Promise<AsyncIterator<Float>>;
+  longitude: () => Promise<AsyncIterator<Float>>;
+}
+
+export interface CoordinatePreviousValues {
+  latitute: Float;
+  longitude: Float;
+}
+
+export interface CoordinatePreviousValuesPromise
+  extends Promise<CoordinatePreviousValues>,
+    Fragmentable {
+  latitute: () => Promise<Float>;
+  longitude: () => Promise<Float>;
+}
+
+export interface CoordinatePreviousValuesSubscription
+  extends Promise<AsyncIterator<CoordinatePreviousValues>>,
+    Fragmentable {
+  latitute: () => Promise<AsyncIterator<Float>>;
+  longitude: () => Promise<AsyncIterator<Float>>;
+}
+
+export interface AggregateOrder {
+  count: Int;
+}
+
+export interface AggregateOrderPromise
+  extends Promise<AggregateOrder>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateOrderSubscription
+  extends Promise<AsyncIterator<AggregateOrder>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
+export interface User {
+  id: ID_Output;
+  name: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface OrderConnection {
+  pageInfo: PageInfo;
+  edges: OrderEdge[];
+}
+
+export interface OrderConnectionPromise
+  extends Promise<OrderConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<OrderEdge>>() => T;
+  aggregate: <T = AggregateOrderPromise>() => T;
+}
+
+export interface OrderConnectionSubscription
+  extends Promise<AsyncIterator<OrderConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<OrderEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateOrderSubscription>() => T;
+}
 
 export type Long = string;
+
+/*
+The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point). 
+*/
+export type Float = number;
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
@@ -353,11 +1211,32 @@ The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
 
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
+
 /**
  * Model Metadata
  */
 
 export const models: Model[] = [
+  {
+    name: "Coordinate",
+    embedded: false
+  },
+  {
+    name: "Order",
+    embedded: false
+  },
+  {
+    name: "OrderStatus",
+    embedded: false
+  },
+  {
+    name: "OrderUpdate",
+    embedded: false
+  },
   {
     name: "User",
     embedded: false

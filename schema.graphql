@@ -1,0 +1,59 @@
+type Query {
+  activeOrders: [Order!]!
+  orderByUser(userId: ID!): [Order!]!
+  order(orderId: ID!): Order
+  orderByConsignmentId(consignmentId: Int!): [Order!]!
+}
+
+type Mutation {
+  createOrder(
+    userId: ID!
+    consignmentId: Int!
+    deliveryLocation: [Float!]!
+    senderLocation: [Float!]!
+    active: Boolean
+    currentStatus: OrderStatus
+  ): Order
+  createOrderUpdate(
+    consignmentId: Int!
+    coordinate: [Float!]!
+    status: OrderStatus!
+  ): OrderUpdate
+}
+
+type User {
+  id: ID!
+  name: String!
+}
+
+enum OrderStatus {
+  BEING_PREPARED
+  EN_ROUTE_TO_SENDER
+  WAITING_AT_SENDER
+  EN_ROUTE_TO_RECIPIENT
+  DELIVERED
+  UNSUCESSFUL
+}
+
+type Coordinate {
+  latitute: Float!
+  longitude: Float!
+}
+
+type OrderUpdate {
+  id: ID!
+  consignmentId: Int!
+  coordinate: Coordinate!
+  status: OrderStatus!
+}
+
+type Order {
+  id: ID!
+  user: User
+  consignmentId: Int!
+  deliveryLocation: Coordinate!
+  senderLocation: Coordinate!
+  updates: [OrderUpdate]
+  active: Boolean
+  currentStatus: OrderStatus!
+}

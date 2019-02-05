@@ -2,3 +2,35 @@ type User {
   id: ID! @unique
   name: String!
 }
+
+enum OrderStatus{
+  BEING_PREPARED
+  EN_ROUTE_TO_SENDER
+  WAITING_AT_SENDER
+  EN_ROUTE_TO_RECIPIENT
+  DELIVERED
+  UNSUCESSFUL
+}
+
+type Coordinate{
+  latitute: Float!
+  longitude: Float!
+}
+
+type OrderUpdate{
+  id: ID! @unique
+  consignmentId: Int!
+  coordinate: Coordinate!
+  status: OrderStatus!
+}
+
+type Order{
+  id: ID! @unique
+  user: User!
+  consignmentId: Int!
+  deliveryLocation: Coordinate! @relation(name: "OrderDeliveryLocation")
+  senderLocation: Coordinate! @relation(name: "OrderSenderLocation")
+  updates: [OrderUpdate]
+  active: Boolean
+  currentStatus: OrderStatus!
+}

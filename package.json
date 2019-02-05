@@ -1,5 +1,19 @@
 {
+  "name": "floom-delivery-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "bootstrap": "prisma deploy && prisma generate",
+    "flush": "prisma reset --force",
+    "seed": "ts-node seed.ts",
+    "start": "ts-node index.ts"
+  },
+  "author": "Hebilicious",
   "dependencies": {
+    "axios": "^0.18.0",
+    "graphql": "^14.1.1",
+    "graphql-yoga": "^1.17.2",
     "prisma-client-lib": "^1.25.7"
   },
   "devDependencies": {
